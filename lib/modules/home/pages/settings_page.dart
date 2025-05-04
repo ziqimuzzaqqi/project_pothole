@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
-  Widget _tile(String title, {IconData? icon}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          if (icon != null) Icon(icon),
-          if (icon != null) const SizedBox(width: 12),
-          Expanded(child: Text(title, style: const TextStyle(fontSize: 16))),
-          const Icon(Icons.keyboard_arrow_down),
-        ],
+  Widget _tile(String title, IconData icon, String route) {
+    return InkWell(
+      onTap: () => Modular.to.pushNamed(route),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.black),
+            const SizedBox(width: 12),
+            Expanded(child: Text(title, style: const TextStyle(fontSize: 16, color: Colors.black))),
+            const Icon(Icons.keyboard_arrow_right, color: Colors.black),
+          ],
+        ),
       ),
     );
   }
@@ -30,10 +34,10 @@ class SettingsPage extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.all(16),
         ),
-        _tile('Profile', icon: Icons.person),
-        _tile('Reset Password', icon: Icons.lock),
-        _tile('Language', icon: Icons.language),
-        _tile('About', icon: Icons.info),
+        _tile('Profile', Icons.person, '/home/profile'),
+        _tile('Reset Password', Icons.lock_reset, '/home/reset-password'),
+        _tile('Language', Icons.language, '/home/language'),
+        _tile('About', Icons.info, '/home/about'),
       ],
     );
   }

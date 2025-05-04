@@ -17,7 +17,7 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   final controller = Modular.get<HomeController>();
 
-  static const List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     MapsPage(),
     UploadPage(),
     CameraPage(),
