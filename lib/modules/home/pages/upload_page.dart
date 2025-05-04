@@ -1,4 +1,4 @@
-// lib/modules/home/pages/upload_page.dart
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,7 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class UploadPage extends StatefulWidget {
-  const UploadPage({Key? key}) : super(key: key);
+  final File? initialImage;
+  const UploadPage({Key? key, this.initialImage}) : super(key: key);
 
   @override
   State<UploadPage> createState() => _UploadPageState();
@@ -16,6 +17,14 @@ class _UploadPageState extends State<UploadPage> {
   final ImagePicker _picker = ImagePicker();
   File? _selectedImage;
   final TextEditingController _addressController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.initialImage != null) {
+      _selectedImage = widget.initialImage;
+    }
+  }
 
   Future<void> _pickImage() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_modular/flutter_modular.dart';
 import 'home_controller.dart';
 import 'home_widget.dart';
@@ -21,6 +23,7 @@ class HomeModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute('/', child: (_, __) => const HomeWidget()),
     ChildRoute('/notifications', child: (_, __) => const NotificationsPage()),
+    ChildRoute('/upload', child: (_, args) => UploadPage(initialImage: args.data as File?)),
     // Settings subpages
     ChildRoute('/profile', child: (_, __) => const ProfilePage()),
     ChildRoute('/language', child: (_, __) => const LanguagePage()),

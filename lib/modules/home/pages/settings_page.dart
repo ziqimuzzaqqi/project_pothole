@@ -33,14 +33,6 @@ class SettingsPage extends StatelessWidget {
       children: [
         const Padding(
           padding: EdgeInsets.all(16),
-          child: Text(
-            'Settings',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
         ),
         _tile('Profile', Icons.person, '/home/profile'),
         _tile('Language', Icons.language, '/home/language'),

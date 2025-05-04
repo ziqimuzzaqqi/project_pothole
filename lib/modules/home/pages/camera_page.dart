@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
 
 class CameraPage extends StatefulWidget {
   const CameraPage({Key? key}) : super(key: key);
@@ -42,6 +44,7 @@ class _CameraPageState extends State<CameraPage> {
       setState(() {
         _capturedImage = File(image.path);
       });
+      Modular.to.pushNamed('/home/upload', arguments: File);
     } catch (e) {
       print('Error taking photo: $e');
     }

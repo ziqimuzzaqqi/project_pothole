@@ -1,20 +1,38 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthController {
   String email = '';
   String password = '';
+  String confirmPassword = '';
+  final ValueNotifier<bool> isLoading = ValueNotifier(false);
 
-  Future<void> login() async {
+  Future<bool> login() async {
     // Contoh simulasi proses login
-    if (email == 'test@example.com' && password == '12345678') {
+    isLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
+    isLoading.value = false;
+
+    if (email == 'test@example.com' && password == 'password') {
       Modular.to.navigate('/home/');
+      return true;
     } else {
-      print('Login gagal: email atau password salah');
+      // Tampilkan pesan error
+      print('Login gagal!');
+      return false;
     }
   }
 
-  Future<void> signup() async {
-    print('Daftar dengan $email');
-    Modular.to.navigate('/home/');
+  Future<bool> signup() async {
+    isLoading.value = true;
+    await Future.delayed(const Duration(seconds: 2));
+    isLoading.value = false;
+
+    if (password != confirmPassword) {
+      return false;
+    }
+    Modular.to.navigate('/home/'); 
+    return true;
   }
 }
+
