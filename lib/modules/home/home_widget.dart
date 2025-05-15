@@ -5,7 +5,7 @@ import 'pages/maps_page.dart';
 import 'pages/upload_page.dart';
 import 'pages/camera_page.dart';
 import 'pages/history_page.dart';
-import 'pages/settings_page.dart';
+import '../settings/pages/settings_page.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);

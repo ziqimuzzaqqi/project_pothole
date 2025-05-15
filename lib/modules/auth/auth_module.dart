@@ -9,7 +9,7 @@ class AuthModule extends Module {
     Bind.lazySingleton((i) => AuthController()),
   ];
 
-   @override
+  @override
   final List<ModularRoute> routes = [
     ChildRoute('/', child: (_, __) => const LoginPage()),
     ChildRoute('/signup', child: (_, __) => const SignUpPage()),

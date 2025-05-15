@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:project_pothole/locale_manager.dart';
+import '../shared/services/language_service.dart';
 import 'auth_controller.dart';
+
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -11,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final _controller = Modular.get<AuthController>();
+  final _langService = Modular.get<LanguageService>();
   bool _obscure1 = true, _obscure2 = true;
 
   @override
@@ -35,22 +39,36 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                   const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: 'ID/EN',
-                        dropdownColor: const Color(0xFF1A1A2B),
-                        items: const [
-                          DropdownMenuItem(value: 'ID/EN', child: Text('ID/EN', style: TextStyle(color: Colors.white))),
-                        ],
-                        onChanged: (_) {},
-                      ),
-                    ),
+                  ValueListenableBuilder<Locale>(
+                    valueListenable: localeNotifier,
+                    builder: (_, locale, __) {
+                      return DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: locale.languageCode,
+                          iconEnabledColor: Colors.white,
+                          dropdownColor: const Color(0xFF1A1A2B),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'en',
+                              child: Text(
+                                'EN',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'id',
+                              child: Text(
+                                'ID',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                          onChanged: (val) {
+                            if (val != null) changeLocale(val);
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -61,7 +79,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   padding: EdgeInsets.only(top: 32, bottom: 16),
                   child: Text(
                     'Sign Up',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -90,7 +112,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       onChanged: (v) => _controller.email = v,
                       validator: (v) {
                         if (v == null || v.isEmpty) return 'Required';
-                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v)) return 'Invalid email';
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(v))
+                          return 'Invalid email';
                         return null;
                       },
                     ),
@@ -108,8 +131,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         filled: true,
                         fillColor: Colors.grey[200],
                         suffixIcon: IconButton(
-                          icon: Icon(_obscure1 ? Icons.visibility : Icons.visibility_off, color: Colors.white70),
-                          onPressed: () => setState(() => _obscure1 = !_obscure1),
+                          icon: Icon(
+                            _obscure1 ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.white70,
+                          ),
+                          onPressed:
+                              () => setState(() => _obscure1 = !_obscure1),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -137,8 +164,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         filled: true,
                         fillColor: Colors.grey[200],
                         suffixIcon: IconButton(
-                          icon: Icon(_obscure2 ? Icons.visibility : Icons.visibility_off, color: Colors.white70),
-                          onPressed: () => setState(() => _obscure2 = !_obscure2),
+                          icon: Icon(
+                            _obscure2 ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.white70,
+                          ),
+                          onPressed:
+                              () => setState(() => _obscure2 = !_obscure2),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -169,7 +200,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal,
                         minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       child: const Text('Sign Up'),
                     ),
@@ -187,7 +220,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     TextSpan(
                       text: 'Already have an account? ',
                       style: TextStyle(color: Colors.white70),
-                      children: [TextSpan(text: 'Log in', style: TextStyle(color: Colors.white))],
+                      children: [
+                        TextSpan(
+                          text: 'Log in',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 ),

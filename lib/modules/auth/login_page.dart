@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:project_pothole/locale_manager.dart';
+import '../shared/services/language_service.dart';
 import 'auth_controller.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _controller = Modular.get<AuthController>();
+  final _langService = Modular.get<LanguageService>();
   bool _obscure = true;
 
   bool get _emailValid {
@@ -41,22 +44,36 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const Spacer(),
                   // Language dropdown stub
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        value: 'ID/EN',
-                        dropdownColor: const Color(0xFF1A1A2B),
-                        items: const [
-                          DropdownMenuItem(value: 'ID/EN', child: Text('ID/EN', style: TextStyle(color: Colors.white))),
-                        ],
-                        onChanged: (_) {},
-                      ),
-                    ),
+                  ValueListenableBuilder<Locale>(
+                    valueListenable: localeNotifier,
+                    builder: (_, locale, __) {
+                      return DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          value: locale.languageCode,
+                          iconEnabledColor: Colors.white,
+                          dropdownColor: const Color(0xFF1A1A2B),
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'en',
+                              child: Text(
+                                'EN',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: 'id',
+                              child: Text(
+                                'ID',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                          onChanged: (val) {
+                            if (val != null) changeLocale(val);
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -68,7 +85,11 @@ class _LoginPageState extends State<LoginPage> {
                   padding: EdgeInsets.only(top: 32, bottom: 16),
                   child: Text(
                     'Log in',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -88,9 +109,13 @@ class _LoginPageState extends State<LoginPage> {
                         hintStyle: const TextStyle(color: Colors.white38),
                         filled: true,
                         fillColor: Colors.grey[200],
-                        suffixIcon: _emailValid
-                            ? const Icon(Icons.check_circle, color: Colors.teal)
-                            : null,
+                        suffixIcon:
+                            _emailValid
+                                ? const Icon(
+                                  Icons.check_circle,
+                                  color: Colors.teal,
+                                )
+                                : null,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -116,7 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                         filled: true,
                         fillColor: Colors.grey[200],
                         suffixIcon: IconButton(
-                          icon: Icon(_obscure ? Icons.visibility : Icons.visibility_off, color: Colors.white70),
+                          icon: Icon(
+                            _obscure ? Icons.visibility : Icons.visibility_off,
+                            color: Colors.white70,
+                          ),
                           onPressed: () => setState(() => _obscure = !_obscure),
                         ),
                         border: OutlineInputBorder(
@@ -136,7 +164,9 @@ class _LoginPageState extends State<LoginPage> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {},
-                        style: TextButton.styleFrom(foregroundColor: Colors.white70),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.white70,
+                        ),
                         child: const Text('Forgot password?'),
                       ),
                     ),
@@ -157,7 +187,9 @@ class _LoginPageState extends State<LoginPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.teal,
                         minimumSize: const Size(double.infinity, 48),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                       child: const Text('Log in'),
                     ),
@@ -175,7 +207,12 @@ class _LoginPageState extends State<LoginPage> {
                     TextSpan(
                       text: "Don't have an account? ",
                       style: TextStyle(color: Colors.white70),
-                      children: [TextSpan(text: 'Sign up', style: TextStyle(color: Colors.white))],
+                      children: [
+                        TextSpan(
+                          text: 'Sign up',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 ),
